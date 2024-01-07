@@ -1,0 +1,229 @@
+@import url('https://fonts.googleapis.com/css?family=Spartan&display=swap');
+* {
+    margin: 0;
+    padding: 0;
+}
+
+.imag{
+    display: none;
+    animation-name: fade;
+    animation-duration: 0.5s;
+}
+@keyframes fade {
+    from {
+        opacity: 0.4
+    } 
+    to {
+        opacity: 1
+    }
+}
+
+#header{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0px 20px;
+    background-color: #eaeced;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+}
+
+#header .logo{
+    height: 77px;
+    width: 138px
+}
+
+#top-bar{
+    display: flex;
+    align-items: center;
+}
+
+#top-bar li{
+    list-style: none;
+    padding: 0 10px;
+    position: relative;
+}
+
+#top-bar li a{
+    color: #1a1a1a;
+    text-decoration: none;
+    font-size: 16px;
+    font-weight: 600;
+    font-family: 'Spartan';
+    transition: 0.125s ease;
+}
+#top-bar li a:hover, #top-bar li a.active{
+    color: #088178;
+}
+#top-bar li a.active::after{
+    content: "";
+    width: 60%;
+    height: 2px;
+    bottom: -3px;
+    left: 15px;
+    position: absolute;
+    background: #088178;
+}
+
+#new-arrivals{
+    text-align: center;
+    font-size: 25px;
+    justify-content: center;
+    margin-top: 90px;
+    font-family: 'Spartan';
+}
+
+#new-arrivals .pics{
+    margin: auto;
+    width: 380px;
+    height: 380px;
+    box-shadow: 20px 20px 25px rgba(0, 0, 0, 0.045);
+    border: 1px none #414141;
+
+}
+#new-arrivals .img1{
+    width: 350px;
+    height: 350px;
+}
+
+#new-arrivals .prev, .next{
+    cursor: pointer;
+    position: absolute;
+    top: 50%;
+    width: auto;
+    padding: 16px;
+    margin-top: 40px;
+    color: rgb(0, 0, 0);
+    font-weight: bold;
+    font-size: 18px;
+    transition: 0.4s ease;
+    border-radius: 0 3px 3px 0;
+    user-select: none;
+}
+#new-arrivals .next{
+    right: 390px;
+    border-radius: 3px 0 0 3px;
+}
+
+#new-arrivals .prev {
+    left: 395px;
+    border-radius: 3px 0 0 3px;
+}
+
+#new-arrivals .prev:hover, .next:hover {
+    background-color: rgba(0,0,0,0.8);
+}
+
+#shop-now {
+    text-align: center;
+    font-family: 'Spartan';
+    font-size: 25px;
+}
+#shop-now .mwk {
+    display: flex;
+    margin-bottom: 50px;
+    margin-left: 280px;
+}
+#shop-now .men {
+    border: 2px solid #088178;
+    padding: 30px 50px;
+    margin: 0 50px;
+    font-size: 20px;
+    cursor: pointer;
+    border-radius: 6px;
+    transition: 0.3s ease;
+    color: black;
+    text-decoration: none;
+}
+
+#shop-now .women {
+    border: 2px solid #088178;
+    padding: 30px 50px;
+    margin: 0 50px;
+    font-size: 20px;
+    cursor: pointer;
+    border-radius: 6px;
+    transition: 0.3s ease;
+    color: black;
+    text-decoration: none;
+}
+
+#shop-now .kids {
+    border: 2px solid #088178;
+    padding: 30px 50px;
+    margin: 0 50px;
+    font-size: 20px;
+    cursor: pointer;
+    border-radius: 6px;
+    transition: 0.3s ease;
+    color: black;
+    text-decoration: none;
+}
+
+#shop-now .men:hover {
+    background: #088178;
+    color: white;
+}
+#shop-now .women:hover {
+    background: #088178;
+    color: white;
+}
+#shop-now .kids:hover {
+    background: #088178;
+    color: white;
+}
+
+
+/*----------------------------------------------------*/
+/*Store Page*/
+.store-page {
+    display: flex;
+}
+
+#filters {
+    border: 1px transparent gray ;
+    width: 20%;
+    height: 100vh;
+    margin-top: 1px;
+}
+
+#filters .text {
+    margin-top: 20px;
+    margin-left: -18px;
+    text-align: center;
+    font-family: 'Spartan';
+    font-weight: 600;
+    font-size: 15px;
+}
+
+#filters .checkboxes {
+    margin-top: 20px;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 15px;
+}
+
+#filters .check {
+    margin-left: 10px;
+    margin-top: 4px;
+}
+
+#products {
+    display: flex;
+    flex-wrap: wrap;
+    max-width: 1100px;
+    border: 1px transparent black;
+    margin-top: 1px;
+    padding-top: 20px;
+}
+#products .product-box {
+    border: 1px solid rgb(211, 211, 211);
+    padding: 5px;
+    border-radius: 7px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+    margin-bottom: 30px;
+    margin-top: 30px;
+    margin-left: 80px;
+}
+#products .prod-img {
+    width: 260px;
+    height: 260px;
+}
