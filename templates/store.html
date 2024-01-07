@@ -1,0 +1,119 @@
+{% load static %}
+
+<!DOCTYPE html>
+
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" type="text/css" href="{% static 'styles/styles.css' %}">
+        <link href='https://fonts.googleapis.com/css?family=Spartan' rel='stylesheet'>
+        <script src="https://kit.fontawesome.com/c7c31fbd71.js" crossorigin="anonymous"></script>
+    </head>
+
+    <body>
+        <section id = "header">
+            <a href="{% url 'index' %}"><img src="{% static 'images/logo.png' %}" class="logo"></a>
+            <div>
+                <ul id="top-bar">
+                    <li><a href="{% url 'index' %}">Home</a></li>
+                    <li><a class = "active" href="#">Store</a></li>
+                    <li><a href="#">Contact</a></li>
+                    <li><a href="{% url 'cart' %}"><i class="fa-solid fa-cart-shopping"></i></a></li>
+                </ul>
+            </div>
+        </section>
+
+        <div class = "store-page">
+            <section id = "filters">
+                <div class = "text">Filters</div>
+                <div class = "checkboxes">
+                    <div class="menCheckbox">
+                        <input type="checkbox" class="check" id = "checkMen">
+                        <label for="check">Men</label><br>
+                    </div>
+                    <div class="menCheckbox">
+                        <input type="checkbox" class="check" id = "checkWomen">
+                        <label for="check">Women</label><br>
+                    </div>
+                    <div class="menCheckbox">
+                        <input type="checkbox" class="check" id = "checkKids">
+                        <label for="check">Kids</label><br>
+                    </div>
+                    <div class="menCheckbox">
+                        <input type="checkbox" class="check">
+                        <label for="check">Unisex</label><br>
+                    </div>
+                </div>
+                <button class="apply-btn" onclick="check()">Apply</button>
+                <button class="reset-btn" onclick="reset()">Reset</button>
+            </section>
+            <script src="{% static 'js/script.js' %}"></script>
+            
+            <section id = "products">
+                {% for prod in prods %}
+                    {% if prod.available %}
+                        <div class = "product-box" id="productBox" data-gender = "{{prod.gender}}">
+                            <img src="{{prod.img.url}}" class = "prod-img">
+                            <div class = "brand">
+                                <h4 class="name-brand">{{prod.brand}}&nbsp;-&nbsp;{{prod.name}}</h4>
+                            </div>
+                            <div class="pid-cost-atc">
+                                <div class = "pid-cost">
+                                    <p class = "pid">{{prod.pid}}</p>
+                                    <p class = "prod-price">₹{{prod.price}}</p>
+                                </div>
+                                <div class = "atc-box">
+                                    <button class="atc" onclick="addToCart('{{prod.img.url}}','{{prod.brand}}','{{prod.pid}}','{{prod.price}}','{{prod.available}}','{{prod.size}}')">Add to Cart</button>
+                                </div>
+                            </div>
+                            <div id="popup">Added to Cart</div>
+                        </div>
+                    {% else %}
+                        <script src="{% static 'js/script.js' %}"></script>
+                        <script>outOfStock('{{prod.pid}}')</script>
+                        <div class = "product-box" id="productBox">
+                            {% with outOfStockImage="images/outofstock.png" %}
+                                <div class="out-of-stock" style="background-image: url('{% static outOfStockImage %}');"></div>
+                            {% endwith %}
+
+                            <img src="{{prod.img.url}}" class = "prod-img">
+                            <div class = "brand">
+                                <h4 class="name-brand">{{prod.brand}}&nbsp;-&nbsp;{{prod.name}}</h4>
+                            </div>
+                            <div class="pid-cost-atc">
+                                <div class = "pid-cost">
+                                    <p class = "pid">{{prod.pid}}</p>
+                                    <p class = "prod-price">₹{{prod.price}}</p>
+                                </div>
+                                <div class = "atc-box">
+                                    <!-- <button class="atc" onclick="addToCart('{{prod.img.url}}','{{prod.brand}}','{{prod.pid}}','{{prod.price}}')">Add to Cart</button> -->
+                                </div>
+                            </div>
+                            <div id="popup">Added to Cart</div>
+                        </div>
+                    {% endif %}
+                {% endfor %}
+            </section>
+        </div>
+        <script src="{% static 'js/script.js' %}"></script>
+        <script>
+            var checkMenParameter = getParameterByName('checkMen');
+            console.log(checkMenParameter);
+            var checkWomenParameter = getParameterByName('checkWomen');
+            var checkKidsParameter = getParameterByName('checkKids');
+            if (checkMenParameter === 'true') {
+                document.getElementById('checkMen').checked = true;
+                check();
+            }
+            else if (checkWomenParameter === 'true') {
+                document.getElementById('checkWomen').checked = true;
+                check();
+            }
+            else if (checkKidsParameter === 'true') {
+                document.getElementById('checkKids').checked = true;
+                check();
+            }
+        </script>
+    </body>
+</html>

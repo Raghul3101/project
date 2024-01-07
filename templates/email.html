@@ -1,0 +1,50 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="{% static 'styles/styles.css' %}">
+    <link href='https://fonts.googleapis.com/css?family=Spartan' rel='stylesheet'>
+    <script src="https://kit.fontawesome.com/c7c31fbd71.js" crossorigin="anonymous"></script>
+    <script src="{% static 'js/script.js' %}"></script>
+    <title></title>
+    <script type="text/javascript"
+        src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js">
+    </script>
+    <script type="text/javascript">
+    (function(){
+        emailjs.init("9153C65vK_cBiMpz-");
+    })();
+    </script>
+</head>
+<body>
+    <section id = "header">
+        <a href="{% url 'index' %}"><img src="{% static 'images/logo.png' %}" class="logo"></a>
+        <div>
+            <ul id="top-bar">
+                <li><a href="{% url 'index' %}">Home</a></li>
+                <li><a href="{% url 'store' %}">Store</a></li>
+                <li><a href="#">Contact</a></li>
+                <li><a class = "active-cart" href="{% url 'cart' %}"><i class="fa-solid fa-cart-shopping"></i></a></li>
+            </ul>
+        </div>
+    </section>
+    <section id="details">
+        <div id="name">
+            <h4>Name:</h4>
+            <input type="text" id = "nameInp" placeholder="Enter your Name" required>
+        </div>
+        <div id="contactNo">
+            <h4>Phone No:</h4>
+            <input type = "tel" id = "contactInp" pattern="[0-9]{10}" placeholder="Enter your Contact No" required>
+        </div>
+        <div id="email">
+            <h4>Email ID:</h4>
+            <input type = "email" id = "emailInp" placeholder="Enter your Email" required>
+        </div>
+        <div id = "submit-email" onclick="sendMail()">Submit</div>
+    </section>
+</body>
+</html>

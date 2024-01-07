@@ -1,0 +1,70 @@
+{% load static %}
+
+<!DOCTYPE html>
+
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" type="text/css" href="{% static 'styles/styles.css' %}">
+        <link href='https://fonts.googleapis.com/css?family=Spartan' rel='stylesheet'>
+        <script src="https://kit.fontawesome.com/c7c31fbd71.js" crossorigin="anonymous"></script>
+        <script src="{% static 'js/script.js' %}"></script>
+    </head>
+    
+    <body onload="displayCart()">
+        <section id = "header">
+            <a href="{% url 'index' %}"><img src="{% static 'images/logo.png' %}" class="logo"></a>
+            <div>
+                <ul id="top-bar">
+                    <li><a href="{% url 'index' %}">Home</a></li>
+                    <li><a href="{% url 'store' %}">Store</a></li>
+                    <li><a href="#">Contact</a></li>
+                    <li><a class = "active-cart" href="#"><i class="fa-solid fa-cart-shopping"></i></a></li>
+                </ul>
+            </div>
+        </section>
+        <h1 id = "cart-heading">Shopping Cart</h1>
+        <section id = "cart" class="section-p1">
+            <table id = "cartTable" width="100%">
+                <thead>
+                    <tr>
+                        <th>REMOVE</th>
+                        <th>IMAGE</th>
+                        <th>PRODUCT ID</th>
+                        <th>BRAND</th>
+                        <th>SIZE</th>
+                        <th>PRICE</th>
+                        <th>QUANTITY</th>
+                        <th>SUBTOTAL</th>
+                    </tr>
+                </thead>
+                <tbody id = "cartItems"></tbody>
+            </table>
+            <div id = "total-and-proceed">
+                <div id="total-section">
+                    <h3>Cart Total</h3>
+                    <table id="total">
+                        <tbody>
+                            <tr>
+                                <td id="subtotal-box">Subtotal</td>
+                                <td id = "cart-subtotal">0</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Total</strong></td>
+                                <td id = "cart-total">123</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <a class="proceed-text" href="{% url 'email' %}">
+                        <div id="proceed">
+                            Proceed
+                        </div>
+                    </a>
+                </div>
+            </div>
+        </section>
+        
+        <script src="{% static 'js/script.js' %}"></script>
+    </body>
+</html>
