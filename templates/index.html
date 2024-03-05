@@ -8,26 +8,39 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <link rel="stylesheet" type="text/css" href="{% static 'styles/styles.css' %}">
         <link href='https://fonts.googleapis.com/css?family=Spartan' rel='stylesheet'>
+        <link href='https://fonts.googleapis.com/css?family=Montserrat' rel='stylesheet'>
         <script src="https://kit.fontawesome.com/c7c31fbd71.js" crossorigin="anonymous"></script>
     </head>                                                                                                                                                                                                                                                     
 
-    <body>
+    <body style="background-color: #ffffff;">
         <section id = "header">
-            <a href="{% url 'index' %}"><img src="{% static 'images/logo.png' %}" class="logo"></a>
+            <div style="display: flex; gap:15px; align-items: center;">
+                <div class="open-btn" id="open" onclick="openNav()"><i class="fa-solid fa-bars"></i></div>
+                <div id="sidebar" class="sidebar">
+                    <a href="javascript:void(0)" class="close-btn" id="close" onclick="closeNav()">&times;</a>
+                    <a href="{% url 'index' %}" style="color: #9d18e6; font-weight:600;">Home</a>
+                    <a href="{% url 'store' %}">Store</a>
+                    <a href="{% url 'about' %}">About</a>
+                    <a href="{% url 'contact' %}">Contact</a>
+                </div>
+                <a href="{% url 'index' %}"><img src="{% static 'images/logo.png' %}" class="logo"></a>
+            </div>
             <div>
                 <ul id="top-bar">
                     <li><a class = "active" href="#">Home</a></li>
                     <li><a href="{% url 'store' %}">Store</a></li>
-                    <li><a href="#">Contact</a></li>
-                    <li><a href="{% url 'cart' %}"><i class="fa-solid fa-cart-shopping"></i></a></li>
+                    <li><a href="{% url 'about' %}">About</a></li>
+                    <li><a href="{% url 'contact' %}">Contact</a></li>
+                    <li id="cart-icon"><a href="{% url 'cart' %}"><i class="fa-solid fa-cart-shopping"></i></a></li>
                 </ul>
             </div>
+            <p id="cart-count"></p>
         </section>
 
         <section id = "new-arrivals">
             <h2>New Arrivals</h2>
             <div class = "pics">
-                <a class = "prev" onclick = "nextPic(-1)">❮</a>
+                <a class = "prev" onclick = "clearInterval(interval);auto(-1);">❮</a>
                 {% for prod in prods %}
                     {% if prod.available %}
                         <div class = "imag">
@@ -35,27 +48,46 @@
                         </div>
                     {% endif %}
                 {% endfor %}
-                <a class = "next" onclick = "nextPic(1)">❯</a>
+                <a class = "next" onclick = "clearInterval(interval); auto(1);">❯</a>
             </div>
+            <progress id="prog" value="0" max="100"></progress>
         </section>
-        <br>
-        <br>
-        <section id = "shop-now">
-            <h3>Shop Now</h3>
-            <br>
-            <div class = "mwk">
-                <a href="{% url 'store' %}?checkMen=true"class = "men">
-                    <span class="men-txt">MEN</span>
-                </a>
-                <a href="{% url 'store' %}?checkWomen=true" class = "women">
-                    WOMEN
-                </a>
-                <a href="{% url 'store' %}?checkKids=true" class = "kids">
-                    KIDS
-                </a>
-            </div>
-        </section>
+        <a id="visitStore" href="{% url 'store' %}">Visit the Store</a>
     
         <script src="{% static 'js/script.js' %}"></script>
+        <script>
+            const cart = JSON.parse(localStorage.getItem('cart')) || [];
+            if (cart.length == 0){
+                document.getElementById('cart-count').style.display = 'none';
+            }
+            else{
+                document.getElementById('cart-count').innerHTML = cart.length;
+            }
+        </script>
+
+        <script>
+            function openNav() {
+                document.getElementById("sidebar").style.width = "250px";
+                var overlay = document.createElement('div');
+                overlay.style.position = 'fixed';
+                overlay.style.top = '0';
+                overlay.style.left = '0';
+                overlay.style.width = '100%';
+                overlay.style.height = '100%';
+                overlay.style.backgroundColor = 'rgba(0, 0, 0, 0.5)';
+                overlay.style.zIndex = '5';
+                overlay.id = 'overlay';
+                document.body.appendChild(overlay);
+                document.body.style.overflow = 'hidden';
+            }
+              
+            function closeNav() {
+                document.getElementById("sidebar").style.width = "0";
+                var overlay = document.getElementById('overlay');
+                if (overlay) {
+                    overlay.parentNode.removeChild(overlay);
+                }
+            }
+        </script>
     </body>
 </html>

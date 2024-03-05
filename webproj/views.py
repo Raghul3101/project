@@ -13,6 +13,12 @@ def store(request):
     prods = product.objects.all().order_by('id')
     return render(request, 'store.html', {'prods' : prods})
 
+def about(request):
+    return render(request, 'about.html')
+
+def contact(request):
+    return render(request, 'contact.html')
+
 def cart(request):
     prods = product.objects.all()
     return render(request, 'cart.html', {'prods' : prods})

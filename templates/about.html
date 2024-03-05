@@ -9,10 +9,9 @@
         <link rel="stylesheet" type="text/css" href="{% static 'styles/styles.css' %}">
         <link href='https://fonts.googleapis.com/css?family=Spartan' rel='stylesheet'>
         <script src="https://kit.fontawesome.com/c7c31fbd71.js" crossorigin="anonymous"></script>
-        <script src="{% static 'js/script.js' %}"></script>
-    </head>
-    
-    <body onload="displayCart()">
+    </head>                                                                                                                                                                                                                                                     
+
+    <body>
         <section id = "header">
             <div style="display: flex; gap:15px; align-items: center;">
                 <div class="open-btn" id="open" onclick="openNav()"><i class="fa-solid fa-bars"></i></div>
@@ -20,7 +19,7 @@
                     <a href="javascript:void(0)" class="close-btn" id="close" onclick="closeNav()">&times;</a>
                     <a href="{% url 'index' %}">Home</a>
                     <a href="{% url 'store' %}">Store</a>
-                    <a href="{% url 'about' %}">About</a>
+                    <a href="{% url 'about' %}" style="color: #9d18e6; font-weight:600;">About</a>
                     <a href="{% url 'contact' %}">Contact</a>
                 </div>
                 <a href="{% url 'index' %}"><img src="{% static 'images/logo.png' %}" class="logo"></a>
@@ -29,57 +28,28 @@
                 <ul id="top-bar">
                     <li><a href="{% url 'index' %}">Home</a></li>
                     <li><a href="{% url 'store' %}">Store</a></li>
-                    <li><a href="{% url 'about' %}">About</a></li>
+                    <li><a class = "active" href="#">About</a></li>
                     <li><a href="{% url 'contact' %}">Contact</a></li>
-                    <li><a class = "active-cart" href="#"><i class="fa-solid fa-cart-shopping"></i></a></li>
+                    <li><a href="{% url 'cart' %}"><i class="fa-solid fa-cart-shopping"></i></a></li>
                 </ul>
             </div>
+            <p id="cart-count">0</p>
         </section>
-        <h1 id = "cart-heading">Shopping Cart</h1>
-        <section id = "cart" class="section-p1">
-            <div id="cartTable-div">
-                <table id = "cartTable" width="100%">
-                    <thead>
-                        <tr>
-                            <th>REMOVE</th>
-                            <th>IMAGE</th>
-                            <th>PRODUCT ID</th>
-                            <th>BRAND</th>
-                            <th>SIZE</th>
-                            <th>PRICE</th>
-                            <th>QUANTITY</th>
-                            <th>SUBTOTAL</th>
-                        </tr>
-                    </thead>
-                    <tbody id = "cartItems"></tbody>
-                </table>
-            </div>
-            <div id = "total-and-proceed">
-                <div id="total-section">
-                    <h3>Cart Total</h3>
-                    <table id="total">
-                        <tbody>
-                            <tr>
-                                <td id="subtotal-box">Subtotal</td>
-                                <td id = "cart-subtotal">0</td>
-                            </tr>
-                            <tr>
-                                <td><strong>Total</strong></td>
-                                <td id = "cart-total">123</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                    {% url 'email' as email_url %}
-                    <a class="proceed-text" onclick="checkSize('{{email_url}}')">
-                        <div id="proceed">
-                            Proceed
-                        </div>
-                    </a>
+        <section id="aboutContainer">
+            <p class="about-text">Mahatis Associates specializes in the distribution of VKC brand footwear. As the first distributor in Chennai since the company's inception, we take pride in providing top-quality footwear to our customers. Our commitment to excellence extends to offering cut-size options and the best discounts to our loyal patrons. At Mahatis Associates, we prioritize customer satisfaction and strive to ensure that every individual finds the perfect pair of shoes for their needs. With our extensive range of VKC footwear, we aim to cater to the diverse preferences and requirements of our valued customers.</p>
+            
+            <h2>Payment</h2>
+            <div class="payment-div">
+                <img src="{% static 'images/qr.jpeg' %}">
+                <div class="bank-details">
+                    <h4>Bank Details</h4>
+                    <p>City Union Bank - Ashok Nagar Branch, Chennai</p>
+                    <p>CC A/c. No. 512020010006131</p>
+                    <p>IFSC: CIUB0000130</p>
                 </div>
-            </div>
+            </div>            
         </section>
-        
-        <script src="{% static 'js/script.js' %}"></script>
+
         <script>
             const cart = JSON.parse(localStorage.getItem('cart')) || [];
             if (cart.length == 0){

@@ -11,4 +11,9 @@ class product(models.Model):
     size = models.CharField(max_length = 25)
     gender = models.CharField(max_length = 1)
     available = models.BooleanField(default=True)
+    def __str__(self):
+        return f"{self.pid}"
+
+    class Meta:
+        verbose_name = "Product"
 
