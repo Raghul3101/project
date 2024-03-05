@@ -1,10 +1,10 @@
 //HOME PAGE
 
-var picInd = 1;
+var picInd = 0;
 showPics(picInd);
-
 function nextPic(n){
-    showPics(picInd += n)
+    showPics(picInd += n);
+    document.getElementById("prog").value=0;
 }
 function showPics(n){
     let i;
@@ -19,6 +19,35 @@ function showPics(n){
         pic[i].style.display = "none";
     }
     pic[picInd-1].style.display = "block";
+    document.getElementById("prog").value=0;
+    smoothProgressBar(3000);
+}
+var interval;
+function auto(n=1){
+    interval = setTimeout(auto, 3000);
+    nextPic(n);
+}
+auto();
+function smoothProgressBar(duration) {
+    var progressBar = document.getElementById("prog");
+    var startValue = parseInt(progressBar.value, 10);
+    var endValue = 100;
+    var startTime = null;
+
+    function animateProgress(timestamp) {
+      if (!startTime) {
+        startTime = timestamp;
+      }
+
+      var progress = timestamp - startTime;
+      var percentage = Math.min(progress / duration, 1);
+      progressBar.value = startValue + percentage * (endValue - startValue);
+
+      if (progress < duration) {
+        requestAnimationFrame(animateProgress);
+      }
+    }
+    requestAnimationFrame(animateProgress);
 }
 function getParameterByName(name, url) {
     if (!url) url = window.location.href;
@@ -31,6 +60,46 @@ function getParameterByName(name, url) {
 }
 //-------------------------------------------------------------------------------------------
 //STORE PAGE
+function search(){
+    let inp;
+    const input1 = document.getElementById('search-input');
+    const input2 = document.getElementById('searchInput');
+    if (input1.value) {
+        inp = input1.value;
+    }
+    else{
+        inp = input2.value;
+    }
+    const products = document.querySelectorAll('.product-box');
+    let pattern = new RegExp(inp, "i");
+    if (inp != ""){
+        products.forEach(function(product){
+            const id = product.getAttribute('data-id');
+            if (id.match(pattern) != null){
+                product.style.display="block";
+                product.style.height="fit-content";
+            }
+            else{
+                product.style.display="none";
+            }
+        });
+    }
+    else{
+        products.forEach(function(product){
+            product.style.display="block";
+        });
+    }
+}
+function searchClick(){
+    document.getElementById('searchDiv').style.display="flex";
+    document.getElementById('searchInput').focus();
+    document.getElementById('searchIcon').style.display = "none";
+}
+function cl(){
+    document.getElementById('searchDiv').style.display="none";
+    document.getElementById('searchIcon').style.display = "block";
+}
+
 function addToCart(img, brand, pid, price, available, size) {
     const popupContainer = document.getElementById('popup');
     popupContainer.classList.add('active');
@@ -39,7 +108,6 @@ function addToCart(img, brand, pid, price, available, size) {
     setTimeout(() => {
         popupContainer.classList.remove('active');
     }, 1400);
-    // localStorage.clear();
     const cart = JSON.parse(localStorage.getItem('cart')) || [];
     cart.push({
         img,
@@ -51,6 +119,8 @@ function addToCart(img, brand, pid, price, available, size) {
         size,
         psize
     });
+    document.getElementById('cart-count').style.display = 'block';
+    document.getElementById('cart-count').innerHTML = cart.length;
     localStorage.setItem('cart',JSON.stringify(cart));
 }
 function outOfStock(pid){
@@ -66,34 +136,103 @@ function check(){
     var checkboxMen = document.getElementById('checkMen');
     var checkboxWomen = document.getElementById('checkWomen');
     var checkboxKids = document.getElementById('checkKids');
+    var availableOnly = document.getElementById('available-only');
+    var checkboxPride = document.getElementById('checkPride');
+    var checkboxStyle = document.getElementById('checkStyle');
     const products = document.querySelectorAll('.product-box');
     products.forEach(function(product){
         const gender = product.getAttribute('data-gender'); 
-        if(checkboxMen.checked && gender == 'm'){
-            product.style.display="block";
+        const available = product.getAttribute('data-available');
+        const brand = product.getAttribute('data-brand');
+        if (availableOnly.checked){
+            if(checkboxMen.checked && gender == 'm' && available){
+                product.style.display="block";
+            }
+            else if(checkboxWomen.checked && gender == 'w' && available){
+                product.style.display="block";
+            }
+            else if(checkboxKids.checked && gender == 'k' && available){
+                product.style.display="block";
+            }
+            else if(!checkboxMen.checked && !checkboxWomen.checked && !checkboxKids.checked/* && !checkboxPride.checked && !checkboxStyle.checked*/ && available){
+                product.style.display="block";
+            }
+            else{
+                product.style.display="none";
+            }
         }
-        else if(checkboxWomen.checked && gender == 'w'){
-            product.style.display="block";
+        else if(checkboxPride.checked && brand.toLowerCase()=='vkc pride'){
+            if(checkboxMen.checked && gender == 'm'){
+                product.style.display="block";
+            }
+            else if(checkboxWomen.checked && gender == 'w'){
+                product.style.display="block";
+            }
+            else if(checkboxKids.checked && gender == 'k'){
+                product.style.display="block";
+            }
+            else if(!checkboxMen.checked && !checkboxWomen.checked && !checkboxKids.checked){
+                product.style.display="block";
+            }
+            else{
+                product.style.display="none";
+            }
         }
-        else if(checkboxKids.checked && gender == 'k'){
-            product.style.display="block";
-        }
-        else if(!checkboxMen.checked && !checkboxWomen.checked && !checkboxKids.checked){
-            product.style.display="block";
+        else if(checkboxStyle.checked && brand.toLowerCase()=='vkc style' || brand.toLowerCase() == 'vkc stile'){
+            if(checkboxMen.checked && gender == 'm'){
+                product.style.display="block";
+            }
+            else if(checkboxWomen.checked && gender == 'w'){
+                product.style.display="block";
+            }
+            else if(checkboxKids.checked && gender == 'k'){
+                product.style.display="block";
+            }
+            else if(!checkboxMen.checked && !checkboxWomen.checked && !checkboxKids.checked){
+                product.style.display="block";
+            }
+            else{
+                product.style.display="none";
+            }
         }
         else{
-            product.style.display="none";
+            if(checkboxMen.checked && gender == 'm' && !checkboxPride.checked && !checkboxStyle.checked){
+                product.style.display="block";
+            }
+            else if(checkboxWomen.checked && gender == 'w' && !checkboxPride.checked && !checkboxStyle.checked){
+                product.style.display="block";
+            }
+            else if(checkboxKids.checked && gender == 'k' && !checkboxPride.checked && !checkboxStyle.checked){
+                product.style.display="block";
+            }
+            else if(!checkboxMen.checked && !checkboxWomen.checked && !checkboxKids.checked && !checkboxPride.checked && !checkboxStyle.checked){
+                product.style.display="block";
+            }
+            else{
+                product.style.display="none";
+            }
         }
     });
 }
 function reset(){
     const products = document.querySelectorAll('.product-box');
+    var availableOnly = document.getElementById('available-only');
     products.forEach(function(product){
-        product.style.display="block";
+        const available = product.getAttribute('data-available');
+        if(availableOnly.checked){
+            if (available){
+                product.style.display="block";
+            }
+        }
+        else{
+            product.style.display="block";
+        }
     });
     var checkboxMen = document.getElementById('checkMen');
     var checkboxWomen = document.getElementById('checkWomen');
     var checkboxKids = document.getElementById('checkKids');
+    var checkboxPride = document.getElementById('checkPride');
+    var checkboxStyle = document.getElementById('checkStyle');
     if (checkboxMen.checked){
         checkboxMen.checked = false;
     }
@@ -102,6 +241,12 @@ function reset(){
     }
     if (checkboxKids.checked){
         checkboxKids.checked = false;
+    }
+    if (checkboxPride.checked){
+        checkboxPride.checked = false;
+    }
+    if (checkboxStyle.checked){
+        checkboxStyle.checked = false;
     }
 }
 
@@ -133,7 +278,7 @@ function displayCart(){
             var tableRow  = '';
             tableRow = `
             <td><a onclick="removeProduct(${i})"><i id = "x-icon" class = "far fa-times-circle"></i></a></td>
-            <td><img class = "cart-prod-img" src = "${item.img}"></td>
+            <td><div class="cart-prod-img-div"><img class = "cart-prod-img" src = "${item.img}"></div></td>
             <td>${item.pid}</td>
             <td>${item.brand}</td>
             <td>
@@ -146,8 +291,10 @@ function displayCart(){
             else{
                 tableRow += `${item.psize}`;
             }
+
             tableRow += `</div>
-                <div class="custom-options">`;
+                <div class="custom-options">
+                <div class="custom-option${i} custom-option" data-value="all" onclick="sizes(${i})">All Sizes</div>`;
             sizes.forEach(j => {
                 console.log(j);
                 tableRow += `<div class="custom-option${i} custom-option" data-value="${j}" onclick="sizes(${i})">${j}</div>`
@@ -155,18 +302,32 @@ function displayCart(){
             tableRow += `
                 </div>
             </div>
-            </td>
-            <td id="priceColumn">₹${item.price}</td>
-            <td><div class = "qty-column">
+            </td>`;
+            if (item.psize == "All Sizes"){
+                tableRow += `<td id="priceColumn">₹${item.price*item.size.split(',').length}</td>`;
+            }
+            else{
+                tableRow += `<td id="priceColumn">₹${item.price}</td>`;
+            }
+            tableRow += `<td><div class = "qty-column">
                     <button class="minus" onclick="decrement(${i})">-</button>
                     <p id = "qty-display" onclick="changeToInput(${i})">${item.qty}</p>
                     <button class="plus" onclick="increment(${i})">+</button>
-                </div></td>
-            <td id="subtotalColumn">₹${subtotal(item.qty,item.price)}</td>
-            `;
+                </div></td>`;
+            if (item.psize == "All Sizes"){
+                tableRow += `<td id="subtotalColumn">₹${item.qty*item.price*item.size.split(',').length}</td>`;
+            }
+            else{
+                tableRow += `<td id="subtotalColumn">₹${item.qty*item.price}</td>`;
+            }
             row.innerHTML=tableRow;
             cartElements.appendChild(row);
-            sub += subtotal(item.qty,item.price);
+            if(item.psize == "All Sizes"){
+                sub += (item.qty*item.price*item.size.split(',').length);
+            }
+            else{
+                sub += (item.qty*item.price);
+            }
         }
     });
     cartTable.style.display = cart.length > 0 ? 'table' : 'none';
@@ -197,7 +358,7 @@ function increment(i){
     subtot[i].innerText = "₹"+price*(num+1);
     var temp = parseInt((document.getElementById('cart-subtotal').innerHTML).replace(/[^0-9]/g, ''));
     cartTotal(price+temp);
-    displayCart();
+    // displayCart();
 }
 function decrement(i){
     const priceColumn = document.querySelectorAll("#priceColumn");
@@ -214,7 +375,7 @@ function decrement(i){
         subtot[i].innerHTML = "₹"+(subTot-price);
         var temp = parseInt((document.getElementById('cart-subtotal').innerHTML).replace(/[^0-9]/g, ''));
         cartTotal(temp-price);
-        displayCart();
+        // displayCart();
     }
     else{
         removeProduct(i);
@@ -242,19 +403,31 @@ function changeToInput(i){
 
 function sizes(i){
     var sizeSelector = document.querySelectorAll("#sizeSelector")[i];
-    // console.log(sizeSelector);
     var optionsContainer = document.querySelectorAll(".custom-options")[i];
     var options = document.querySelectorAll(".custom-option"+i);
+    const priceColumn = document.querySelectorAll("#priceColumn");
+    const subtot = document.querySelectorAll("#subtotalColumn");
     optionsContainer.classList.toggle('active');
     const cart = JSON.parse(localStorage.getItem('cart')) || [];
     options.forEach(function (option) {
-        // console.log(option);
         option.addEventListener('click', function () {
-            sizeSelector.innerHTML = option.innerHTML;
-            cart[i].psize = option.innerHTML;
-            console.log(cart[i].psize);
-            localStorage.setItem('cart',JSON.stringify(cart));
-            optionsContainer.classList.remove('active');
+            if (option.innerHTML == "All Sizes"){
+                priceColumn[i].innerHTML = "₹"+cart[i].price*cart[i].size.split(',').length;
+                subtot[i].innerHTML = "₹"+cart[i].price*(cart[i].size.split(',').length)*cart[i].qty;
+                sizeSelector.innerHTML = option.innerHTML;
+                cart[i].psize = option.innerHTML;
+                localStorage.setItem('cart',JSON.stringify(cart));
+                optionsContainer.classList.remove('active');
+            }
+            else{
+                sizeSelector.innerHTML = option.innerHTML;
+                priceColumn[i].innerHTML = "₹"+cart[i].price;
+                subtot[i].innerHTML = "₹"+cart[i].price*cart[i].qty;
+                cart[i].psize = option.innerHTML;
+                localStorage.setItem('cart',JSON.stringify(cart));
+                optionsContainer.classList.remove('active');
+            }
+            displayCart();
         });
     });
     window.addEventListener('click', function (e) {
@@ -262,6 +435,23 @@ function sizes(i){
             optionsContainer.classList.remove('active');
         }
     });
+}
+
+function checkSize(link){
+    const cart = JSON.parse(localStorage.getItem('cart')) || [];
+    var check = true;
+    cart.forEach(item =>{
+        console.log(item.psize);
+        if (item.psize == 0){
+            check = false;
+        }
+    });
+    if (check){
+        window.location.href = link;
+    }
+    else{
+        alert("Please Select the Size for all the products.");
+    }
 }
 
 //---------------------------------------------------------------------------
@@ -273,8 +463,14 @@ function sendMail(){
     console.log(document.getElementById('nameInp').value);
     const cart = JSON.parse(localStorage.getItem('cart')) || [];
     cart.forEach((item, ind) =>{
-        temp += (ind+1)+") Product Id: "+item.pid+"\n&nbsp;&nbsp;&nbsp;&nbsp;Brand: "+item.brand+"\n&nbsp;&nbsp;&nbsp;&nbsp;Size: "+item.psize+"\n&nbsp;&nbsp;&nbsp;&nbsp;Price: ₹"+item.price+"\n&nbsp;&nbsp;&nbsp;&nbsp;Quantity: "+item.qty+"\n&nbsp;&nbsp;&nbsp;&nbsp;Subtotal: ₹"+(item.price*item.qty)+"\n\n";
-        total_cost += (item.price*item.qty);
+        if (item.psize == "All Sizes"){
+            temp += (ind+1)+") Product Id: "+item.pid+"\n&nbsp;&nbsp;&nbsp;&nbsp;Brand: "+item.brand+"\n&nbsp;&nbsp;&nbsp;&nbsp;Size: "+item.psize+"\n&nbsp;&nbsp;&nbsp;&nbsp;Price: ₹"+item.price*item.size.split(',').length+"\n&nbsp;&nbsp;&nbsp;&nbsp;Quantity: "+item.qty+"\n&nbsp;&nbsp;&nbsp;&nbsp;Subtotal: ₹"+(item.price*item.qty*item.size.split(',').length)+"\n\n";
+            total_cost += (item.price*item.qty*item.size.split(',').length);
+        }
+        else{
+            temp += (ind+1)+") Product Id: "+item.pid+"\n&nbsp;&nbsp;&nbsp;&nbsp;Brand: "+item.brand+"\n&nbsp;&nbsp;&nbsp;&nbsp;Size: "+item.psize+"\n&nbsp;&nbsp;&nbsp;&nbsp;Price: ₹"+item.price+"\n&nbsp;&nbsp;&nbsp;&nbsp;Quantity: "+item.qty+"\n&nbsp;&nbsp;&nbsp;&nbsp;Subtotal: ₹"+(item.price*item.qty)+"\n\n";
+            total_cost += (item.price*item.qty);
+        }
     });
     temp += "Total: ₹"+total_cost;
     var params = {
@@ -303,7 +499,7 @@ function sendMail(){
             document.getElementById('contactInp').value = "",
             document.getElementById('emailInp').value = "",
             console.log(res);
-            alert("sent");
+            alert("Order Placed Successfully. Check your mail for the order details.");
         })
         .catch((err) => console.log(err));
     }
